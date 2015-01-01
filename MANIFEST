@@ -1,0 +1,6 @@
+lib/MooseX/Role/Registry.pm
+LICENSE
+Makefile.PL
+MANIFEST
+README.md
+t/00_load.t
