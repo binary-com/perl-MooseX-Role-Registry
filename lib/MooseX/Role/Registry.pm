@@ -10,6 +10,26 @@ MooseX::Role::Registry
 
 =head1 SYNOPSYS
 
+    package Foo::Registry;
+    use Moose;
+    with 'MooseX::Role::Registry';
+
+    sub config_file {
+        return '/foo_objects.yml';
+    }
+
+    sub build_registry_object {
+        my $self   = shift;
+        my $name   = shift;
+        my $values = shift || {};
+
+        return Foo->new({
+            name                   => $name,
+            %$values
+        });
+    }
+
+    package main;
     my $registry = Foo::Registry->instance;
     my $foo = $registry->get('bar');
 
