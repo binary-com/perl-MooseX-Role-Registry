@@ -2,7 +2,7 @@
 ### MooseX::Role::Registry
 [![Build Status](https://travis-ci.org/binary-com/perl-MooseX-Role-Registry.svg?branch=master)](https://travis-ci.org/binary-com/perl-MooseX-Role-Registry) [![Coverage Status](https://coveralls.io/repos/binary-com/perl-MooseX-Role-Registry/badge.png?branch=master)](https://coveralls.io/r/binary-com/perl-MooseX-Role-Registry?branch=master)
 
-### Moose Rose which provides a Registry lookup functionality
+Moose Role which provides a Registry lookup functionality
 
 ```
 package Foo::Registry;
@@ -66,7 +66,7 @@ You can also look for information at:
 
 #### LICENSE AND COPYRIGHT
 
-Copyright (C) 2014 binary.com
+Copyright (C) 2015 binary.com
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of the the Artistic License (2.0). You may obtain a
