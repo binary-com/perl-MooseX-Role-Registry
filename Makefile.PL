@@ -16,7 +16,7 @@ WriteMakefile(
     },
     BUILD_REQUIRES => {
         'Test::More' => 0,
-        'Test::Exception' => 0,
+        'Moose' => 0,
     },
     PREREQ_PM => {
         'Moose::Role'          => '0',

@@ -8,6 +8,10 @@ our $VERSION = '1.00';
 
 MooseX::Role::Registry
 
+=head1 VERSION
+
+1.00
+
 =head1 SYNOPSYS
 
     package Foo::Registry;
@@ -35,12 +39,12 @@ MooseX::Role::Registry
 
 =head1 DESCRIPTION
 
-This role watches file which describes a hashref of objects. This hashref is
-called a "registry" because the objects in the hashref can be requested by name
-using I<get>.
+This role watches a file which describes a hashref of objects in yml format.
+This hashref is called a "registry" because the objects in the hashref can be
+requested by name using I<get>.
 
 Implementations should be singletons! In other words, when using a class that is
-derived from BOM::System::Runtime::Registry, you shouldn't call I<new>. Instead,
+derived from MooseX::Role::Registry, you shouldn't call I<new>. Instead,
 just get the singelton object using the I<instance> method and call I<get> on
 the result.
 
@@ -48,7 +52,6 @@ the result.
 
 use Moose::Role;
 use namespace::autoclean;
-
 use Carp;
 use Try::Tiny;
 use YAML::XS qw(LoadFile);
@@ -193,7 +196,7 @@ __END__
 
 =item L<Moose::Role>
 
-=item L<namespace::autoclean>>
+=item L<namespace::autoclean>
 
 =item L<Try::Tiny>
 
@@ -248,7 +251,7 @@ L<http://search.cpan.org/dist/MooseX-Role-Registry/>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (C) 2015 binary.com.
+Copyright (C) 2015 binary.com
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of the the Artistic License (2.0). You may obtain a
