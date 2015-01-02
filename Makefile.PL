@@ -4,10 +4,10 @@ use warnings FATAL => 'all';
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
-    NAME             => 'Locale::Country::Extra',
+    NAME             => 'MooseX::Role::Registry',
     AUTHOR           => q{binary.com <perl@binary.com>},
-    VERSION_FROM     => 'lib/Locale/Country/Extra.pm',
-    ABSTRACT         => 'Standard and IDD codes for Country identification, with Multilingual support',
+    VERSION_FROM     => 'lib/MooseX/Role/Registry.pm',
+    ABSTRACT         => 'Moose Role which provides a Registry lookup functionality',
     LICENSE          => 'Artistic_2_0',
     PL_FILES         => {},
     MIN_PERL_VERSION => 5.006,
@@ -19,21 +19,27 @@ WriteMakefile(
         'Test::Exception' => 0,
     },
     PREREQ_PM => {
-        'Locale::Country' => '0',
-        'Locale::Country::Multilingual' => 0,
-    },
+        'Moose::Role'          => '0',
+        'namespace::autoclean' => 0,
+        'Try::Tiny'            => 0,
+        'YAML::XS'             => 0,
+      },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
-    clean => { FILES => 'Locale-Country-Extra-*' },
-    (eval { ExtUtils::MakeMaker->VERSION(6.46) } ? (META_MERGE => {
-        'meta-spec' => { version => 2 },
-            resources => {
-                repository => {
-                    type => 'git',
-                    url => 'https://github.com/binary-com/perl-Locale-Country-Extra.git',
-                    web => 'https://github.com/binary-com/perl-Locale-Country-Extra',
-                },
-              }
-          } )
-     : ()
-    ),
+    clean => { FILES => 'MooseX-Role-Registry-*' },
+    (
+        eval { ExtUtils::MakeMaker->VERSION(6.46) }
+        ? (
+            META_MERGE => {
+                'meta-spec' => { version => 2 },
+                resources   => {
+                    repository => {
+                        type => 'git',
+                        url => 'https://github.com/binary-com/perl-MooseX-Role-Registry.git',
+                        web => 'https://github.com/binary-com/perl-MooseX-Role-Registry',
+                    },
+                }
+            }
+          )
+        : ()
+      ),
 );

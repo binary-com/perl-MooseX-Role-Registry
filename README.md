@@ -2,17 +2,35 @@
 ### MooseX::Role::Registry
 [![Build Status](https://travis-ci.org/binary-com/perl-MooseX-Role-Registry.svg?branch=master)](https://travis-ci.org/binary-com/perl-MooseX-Role-Registry) [![Coverage Status](https://coveralls.io/repos/binary-com/perl-MooseX-Role-Registry/badge.png?branch=master)](https://coveralls.io/r/binary-com/perl-MooseX-Role-Registry?branch=master)
 
-Moose Rose which provides a Registry function
+### Moose Rose which provides a Registry lookup functionality
 
 ```
-use Locale::Country::Extra;
+package Foo::Registry;
+use Moose;
+with 'MooseX::Role::Registry';
 
-my $countries = Locale::Country::Extra->new();
+sub config_file {
+    return '/foo_objects.yml';
+}
 
-my $c = $countries->country_from_code('au'); # returns 'Australia'
-my $code = $countries->code_from_country('Indonesia'); # returns 'id'
-my $idd = $countries->idd_from_code('in'); # returns 91
-my $code = $countries->code_from_phone('+44 8882220202'); # returns 'gb'
+sub build_registry_object {
+    my $self   = shift;
+    my $name   = shift;
+    my $values = shift || {};
+
+    return Foo->new({
+        name                   => $name,
+        %$values
+    });
+}
+```
+
+Using your Foo registry class
+
+```
+my $registry = Foo::Registry->instance;
+my $foo = $registry->get('bar');
+
 ```
 
 #### INSTALLATION
