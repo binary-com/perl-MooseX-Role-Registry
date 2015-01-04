@@ -31,5 +31,7 @@ is scalar(@all), 3, 'there are 3 objects';
 my $pokemon = $reg->get('ivysaur');
 ok $pokemon, 'get() works';
 
+ok !defined($reg->get()), 'get without arg returns undef';
+
 done_testing();
 

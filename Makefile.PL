@@ -15,9 +15,10 @@ WriteMakefile(
         'ExtUtils::MakeMaker' => 0,
     },
     BUILD_REQUIRES => {
-        'Test::More' => 0,
-        'Moose' => 0,
-    },
+        'Test::More'      => 0,
+        'Test::Exception' => 0,
+        'Moose'           => 0,
+      },
     PREREQ_PM => {
         'Moose::Role'          => '0',
         'namespace::autoclean' => 0,
