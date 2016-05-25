@@ -14,11 +14,11 @@ before_install:
     - build-perl
     - perl -V
     # install prereqs
-    - "cpanm Moose"
-    - "cpanm Moose::Role"
-    - "cpanm namespace::autoclean"
-    - "cpanm Try::Tiny"
-    - "cpanm YAML::XS"
-    - "cpanm Devel::Cover::Report::Coveralls"
+    - "cpanm -n Moose"
+    - "cpanm -n Moose::Role"
+    - "cpanm -n namespace::autoclean"
+    - "cpanm -n Try::Tiny"
+    - "cpanm -n YAML::XS"
+    - "cpanm -n Devel::Cover::Report::Coveralls"
 script:
     perl Makefile.PL && make test && cover -test -report coveralls
