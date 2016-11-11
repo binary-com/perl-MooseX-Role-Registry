@@ -1,6 +1,8 @@
 
 ### MooseX::Role::Registry
-[![Build Status](https://travis-ci.org/binary-com/perl-MooseX-Role-Registry.svg?branch=master)](https://travis-ci.org/binary-com/perl-MooseX-Role-Registry) [![Coverage Status](https://coveralls.io/repos/binary-com/perl-MooseX-Role-Registry/badge.png?branch=master)](https://coveralls.io/r/binary-com/perl-MooseX-Role-Registry?branch=master)
+[![Build Status](https://travis-ci.org/binary-com/perl-MooseX-Role-Registry.svg?branch=master)](https://travis-ci.org/binary-com/perl-MooseX-Role-Registry) 
+[![codecov](https://codecov.io/gh/binary-com/perl-MooseX-Role-Registry/branch/master/graph/badge.svg)](https://codecov.io/gh/binary-com/perl-MooseX-Role-Registry)
+
 
 Moose Role which provides a Registry lookup functionality
 
