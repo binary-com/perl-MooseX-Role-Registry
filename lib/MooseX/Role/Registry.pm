@@ -4,6 +4,8 @@ use warnings;
 
 our $VERSION = '1.00';
 
+# ABSTRACT: MooseX::Role::Registry watches a file which describes a hashref of objects in yml format
+
 =head1 NAME
 
 MooseX::Role::Registry
@@ -175,6 +177,10 @@ sub _build__registry {
 
     return $self->registry_fixup($registry);
 }
+
+=for Pod::Coverage BUILD
+
+=cut
 
 sub BUILD {
     my $self = shift;
