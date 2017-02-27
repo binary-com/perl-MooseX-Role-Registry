@@ -2,7 +2,7 @@ package MooseX::Role::Registry;
 use strict;
 use warnings;
 
-our $VERSION = '1.00';
+our $VERSION = '1.01';
 
 # ABSTRACT: MooseX::Role::Registry watches a file which describes a hashref of objects in yml format
 
@@ -97,7 +97,7 @@ Returns all of the objects stored in the registry. Useful for generic grep() cal
 
 sub all {
     my $self = shift;
-    return values %{ $self->_registry };
+    return values %{$self->_registry};
 }
 
 =head2 keys
@@ -109,7 +109,7 @@ Returns a list of all of the (lookup) keys of objects currently registered in $s
 sub keys    ## no critic (ProhibitBuiltinHomonyms)
 {
     my $self = shift;
-    my @result = sort { $a cmp $b } ( keys %{ $self->_registry } );
+    my @result = sort { $a cmp $b } (keys %{$self->_registry});
     return @result;
 }
 
@@ -123,8 +123,7 @@ they are stored in memory as part of I<$self>.
 sub registry_fixup {
     my $self     = shift;
     my $registry = shift;
-    return
-      $registry;   # Default implementation is to leave the loaded hashref alone
+    return $registry;    # Default implementation is to leave the loaded hashref alone
 }
 
 has _registry => (
@@ -142,7 +141,7 @@ has _db => (
 sub _build__db {
     my $self = shift;
 
-    return YAML::XS::LoadFile( $self->config_file );
+    return YAML::XS::LoadFile($self->config_file);
 }
 
 sub _build__registry {
@@ -152,26 +151,20 @@ sub _build__registry {
     # If we've made it this far we no longer need this key
     delete $registry->{version};
 
-    foreach my $key ( CORE::keys %$registry ) {
+    foreach my $key (CORE::keys %$registry) {
 
         # TOTALLY coding to the coverage tool here. This sucks.
         my $reg_defn      = $registry->{$key};
         my $reg_defn_type = ref $reg_defn;
-        if ( not $reg_defn_type or ( $reg_defn_type eq 'HASH' ) ) {
+        if (not $reg_defn_type or ($reg_defn_type eq 'HASH')) {
             try {
-                $registry->{$key} =
-                  $self->build_registry_object( $key, $reg_defn );
+                $registry->{$key} = $self->build_registry_object($key, $reg_defn);
             }
             catch {
-                Carp::croak( "Unable to convert entry $key in "
-                      . $self->config_file
-                      . " into a registry entry : $_" );
+                Carp::croak("Unable to convert entry $key in " . $self->config_file . " into a registry entry : $_");
             };
-        }
-        else {
-            Carp::croak( "Invalid entry $key in "
-                  . $self->config_file
-                  . ", not a hash" );
+        } else {
+            Carp::croak("Invalid entry $key in " . $self->config_file . ", not a hash");
         }
     }
 
