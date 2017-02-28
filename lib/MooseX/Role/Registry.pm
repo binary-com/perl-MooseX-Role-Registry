@@ -2,15 +2,13 @@ package MooseX::Role::Registry;
 use strict;
 use warnings;
 
-our $VERSION = '1.00';
+our $VERSION = '1.01';
+
+# ABSTRACT: MooseX::Role::Registry watches a file which describes a hashref of objects in yml format
 
 =head1 NAME
 
 MooseX::Role::Registry
-
-=head1 VERSION
-
-1.00
 
 =head1 SYNOPSYS
 
@@ -99,7 +97,7 @@ Returns all of the objects stored in the registry. Useful for generic grep() cal
 
 sub all {
     my $self = shift;
-    return values %{ $self->_registry };
+    return values %{$self->_registry};
 }
 
 =head2 keys
@@ -111,7 +109,7 @@ Returns a list of all of the (lookup) keys of objects currently registered in $s
 sub keys    ## no critic (ProhibitBuiltinHomonyms)
 {
     my $self = shift;
-    my @result = sort { $a cmp $b } ( keys %{ $self->_registry } );
+    my @result = sort { $a cmp $b } (keys %{$self->_registry});
     return @result;
 }
 
@@ -125,8 +123,7 @@ they are stored in memory as part of I<$self>.
 sub registry_fixup {
     my $self     = shift;
     my $registry = shift;
-    return
-      $registry;   # Default implementation is to leave the loaded hashref alone
+    return $registry;    # Default implementation is to leave the loaded hashref alone
 }
 
 has _registry => (
@@ -144,7 +141,7 @@ has _db => (
 sub _build__db {
     my $self = shift;
 
-    return YAML::XS::LoadFile( $self->config_file );
+    return YAML::XS::LoadFile($self->config_file);
 }
 
 sub _build__registry {
@@ -154,31 +151,29 @@ sub _build__registry {
     # If we've made it this far we no longer need this key
     delete $registry->{version};
 
-    foreach my $key ( CORE::keys %$registry ) {
+    foreach my $key (CORE::keys %$registry) {
 
         # TOTALLY coding to the coverage tool here. This sucks.
         my $reg_defn      = $registry->{$key};
         my $reg_defn_type = ref $reg_defn;
-        if ( not $reg_defn_type or ( $reg_defn_type eq 'HASH' ) ) {
+        if (not $reg_defn_type or ($reg_defn_type eq 'HASH')) {
             try {
-                $registry->{$key} =
-                  $self->build_registry_object( $key, $reg_defn );
+                $registry->{$key} = $self->build_registry_object($key, $reg_defn);
             }
             catch {
-                Carp::croak( "Unable to convert entry $key in "
-                      . $self->config_file
-                      . " into a registry entry : $_" );
+                Carp::croak("Unable to convert entry $key in " . $self->config_file . " into a registry entry : $_");
             };
-        }
-        else {
-            Carp::croak( "Invalid entry $key in "
-                  . $self->config_file
-                  . ", not a hash" );
+        } else {
+            Carp::croak("Invalid entry $key in " . $self->config_file . ", not a hash");
         }
     }
 
     return $self->registry_fixup($registry);
 }
+
+=for Pod::Coverage BUILD
+
+=cut
 
 sub BUILD {
     my $self = shift;
@@ -248,46 +243,6 @@ L<http://cpanratings.perl.org/d/MooseX-Role-Registry>
 L<http://search.cpan.org/dist/MooseX-Role-Registry/>
 
 =back
-
-=head1 LICENSE AND COPYRIGHT
-
-Copyright (C) 2015 binary.com
-
-This program is free software; you can redistribute it and/or modify it
-under the terms of the the Artistic License (2.0). You may obtain a
-copy of the full license at:
-
-L<http://www.perlfoundation.org/artistic_license_2_0>
-
-Any use, modification, and distribution of the Standard or Modified
-Versions is governed by this Artistic License. By using, modifying or
-distributing the Package, you accept this license. Do not use, modify,
-or distribute the Package, if you do not accept this license.
-
-If your Modified Version has been derived from a Modified Version made
-by someone other than you, you are nevertheless required to ensure that
-your Modified Version complies with the requirements of this license.
-
-This license does not grant you the right to use any trademark, service
-mark, tradename, or logo of the Copyright Holder.
-
-This license includes the non-exclusive, worldwide, free-of-charge
-patent license to make, have made, use, offer to sell, sell, import and
-otherwise transfer the Package with respect to any patent claims
-licensable by the Copyright Holder that are necessarily infringed by the
-Package. If you institute patent litigation (including a cross-claim or
-counterclaim) against any party alleging that the Package constitutes
-direct or contributory patent infringement, then this Artistic License
-to you shall terminate on the date that such litigation is filed.
-
-Disclaimer of Warranty: THE PACKAGE IS PROVIDED BY THE COPYRIGHT HOLDER
-AND CONTRIBUTORS "AS IS' AND WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES.
-THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-PURPOSE, OR NON-INFRINGEMENT ARE DISCLAIMED TO THE EXTENT PERMITTED BY
-YOUR LOCAL LAW. UNLESS REQUIRED BY LAW, NO COPYRIGHT HOLDER OR
-CONTRIBUTOR WILL BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, OR
-CONSEQUENTIAL DAMAGES ARISING IN ANY WAY OUT OF THE USE OF THE PACKAGE,
-EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =cut
 
