@@ -51,7 +51,7 @@ the result.
 use Moose::Role;
 use namespace::autoclean;
 use Carp;
-use Try::Tiny;
+use Syntax::Keyword::Try;
 use YAML::XS qw(LoadFile);
 
 =head1 REQUIRED SUBCLASS METHODS
@@ -160,9 +160,9 @@ sub _build__registry {
             try {
                 $registry->{$key} = $self->build_registry_object($key, $reg_defn);
             }
-            catch {
-                Carp::croak("Unable to convert entry $key in " . $self->config_file . " into a registry entry : $_");
-            };
+            catch ($e) {
+                Carp::croak("Unable to convert entry $key in " . $self->config_file . " into a registry entry : $e");
+            }
         } else {
             Carp::croak("Invalid entry $key in " . $self->config_file . ", not a hash");
         }
@@ -193,7 +193,7 @@ __END__
 
 =item L<namespace::autoclean>
 
-=item L<Try::Tiny>
+=item L<Syntax::Keyword::Try>
 
 =item L<YAML::XS>
 
