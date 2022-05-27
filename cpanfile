@@ -1,5 +1,5 @@
 requires 'Moose::Role';
-requires 'Try::Tiny';
+requires 'Syntax::Keyword::Try';
 requires 'YAML::XS';
 requires 'namespace::autoclean';
 requires 'perl', '5.006';
