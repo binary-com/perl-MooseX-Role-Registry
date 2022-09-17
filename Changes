@@ -1,4 +1,5 @@
 {{$NEXT}}
+   - replace Try::Tiny with Syntax::Keyword::Try 
 
 1.01      2017-02-27 06:58:44+00:00 UTC
     Switch to dzil
