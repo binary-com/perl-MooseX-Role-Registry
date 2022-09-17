@@ -27,6 +27,44 @@ jobs:
           name: Run Tests
           command: |
             dzil smoke --release --author && dzil cover -test && dzil xtest
+  release:
+    docker:
+      - image: perldocker/perl-tester:5.34
+    steps:
+      - checkout
+      - run:
+          command:
+            cpm install -g --no-test Dist::Zilla Dist::Zilla::App::Command::cover ExtUtils::MakeMaker
+          name: Install Dzil
+      - run:
+          name: Install dzil author dependencies
+          command: |
+            cpm install -g \
+            -w 2 \
+            --mirror=http://cpan.cpantesters.org/ $(dzil authordeps --missing)
+      - run:
+          name: Install dist deps
+          command: |
+            dzil listdeps --author --missing --cpanm-versions | xargs cpanm -n
+      - run:
+          name: setup PAUSE account
+          command: |
+            echo -e "user $PAUSE_user\npassword $PAUSE_password\n" >> ~/.pause
+      - run:
+          name: setup git
+          command: |
+            git config --global user.email "circleci@binary.com"
+            git config --global user.name "circleci"
+      - run:
+          name: Release to PAUSE
+          command: |
+            if grep -Pzq '\{\{\$NEXT\}\}\n\s*\n' Changes
+            then
+                echo "No changes, no need release"
+                exit 0
+            fi
+            dzil release --trial
+            git push
 
 workflows:
   build-workflow:
@@ -41,4 +79,12 @@ workflows:
               - "5.30"
               - "5.32"
               - "5.34"
+    - release:
+       context: release_binary
+       requires:
+         - test
+       filters:
+         branches:
+           only: 
+           - master
 version: 2.1
