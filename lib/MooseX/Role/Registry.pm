@@ -2,7 +2,7 @@ package MooseX::Role::Registry;
 use strict;
 use warnings;
 
-our $VERSION = '1.01';
+our $VERSION = '1.02';
 
 # ABSTRACT: MooseX::Role::Registry watches a file which describes a hashref of objects in yml format
 
