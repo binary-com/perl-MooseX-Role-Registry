@@ -15,7 +15,10 @@ alias:
     run:
       name: Install dist deps
       command: |
-        dzil listdeps --author --missing --cpanm-versions | xargs cpanm -n
+        # see https://github.com/team-at-cpan/Dist-Zilla-Plugin-PodInherit/issues/1 to check why we not use 
+        # dzil listdeps --missing here
+        # dzil listdeps --author --missing --cpanm-versions | xargs cpanm -n
+        cpanm --installdeps .
  
 jobs:
   test:
