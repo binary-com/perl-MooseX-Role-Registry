@@ -1,108 +1,117 @@
+# NAME
 
-### MooseX::Role::Registry
-[![Build Status](https://travis-ci.org/binary-com/perl-MooseX-Role-Registry.svg?branch=master)](https://travis-ci.org/binary-com/perl-MooseX-Role-Registry) 
-[![codecov](https://codecov.io/gh/binary-com/perl-MooseX-Role-Registry/branch/master/graph/badge.svg)](https://codecov.io/gh/binary-com/perl-MooseX-Role-Registry)
+MooseX::Role::Registry
 
+# SYNOPSYS
 
-Moose Role which provides a Registry lookup functionality
+    package Foo::Registry;
+    use Moose;
+    with 'MooseX::Role::Registry';
 
-```
-package Foo::Registry;
-use Moose;
-with 'MooseX::Role::Registry';
+    sub config_file {
+        return '/foo_objects.yml';
+    }
 
-sub config_file {
-    return '/foo_objects.yml';
-}
+    sub build_registry_object {
+        my $self   = shift;
+        my $name   = shift;
+        my $values = shift || {};
 
-sub build_registry_object {
-    my $self   = shift;
-    my $name   = shift;
-    my $values = shift || {};
+        return Foo->new({
+            name                   => $name,
+            %$values
+        });
+    }
 
-    return Foo->new({
-        name                   => $name,
-        %$values
-    });
-}
-```
+    package main;
+    my $registry = Foo::Registry->instance;
+    my $foo = $registry->get('bar');
 
-Using your Foo registry class
+# DESCRIPTION
 
-```
-my $registry = Foo::Registry->instance;
-my $foo = $registry->get('bar');
+This role watches a file which describes a hashref of objects in yml format.
+This hashref is called a "registry" because the objects in the hashref can be
+requested by name using _get_.
 
-```
+Implementations should be singletons! In other words, when using a class that is
+derived from MooseX::Role::Registry, you shouldn't call _new_. Instead,
+just get the singelton object using the _instance_ method and call _get_ on
+the result.
 
-#### INSTALLATION
+# REQUIRED SUBCLASS METHODS
 
-To install this module, run the following commands:
+## config\_filename
 
-	perl Makefile.PL
-	make
-	make test
-	make install
+Returns the filesystem path of the default location of the configuration file
+that is watched by a given consumer of MooseX::Role::Registry
 
-#### SUPPORT AND DOCUMENTATION
+## build\_registry\_object
 
-After installing, you can find documentation for this module with the
-perldoc command.
+A function to create an object of the registy entry
+
+# METHODS
+
+## get($name)
+
+Returns the registered entity called $name, or undef if none exists.
+
+## all
+
+Returns all of the objects stored in the registry. Useful for generic grep() calls.
+
+## keys
+
+Returns a list of all of the (lookup) keys of objects currently registered in $self.
+
+## registry\_fixup
+
+A callback which allows subclasses to modify the hashref of loaded objects before
+they are stored in memory as part of _$self_.
+
+# DEPENDENCIES
+
+- [Moose::Role](https://metacpan.org/pod/Moose%3A%3ARole)
+- [namespace::autoclean](https://metacpan.org/pod/namespace%3A%3Aautoclean)
+- [Syntax::Keyword::Try](https://metacpan.org/pod/Syntax%3A%3AKeyword%3A%3ATry)
+- [YAML::XS](https://metacpan.org/pod/YAML%3A%3AXS)
+
+# SOURCE CODE
+
+[GitHub](https://github.com/binary-com/perl-MooseX-Role-Registry)
+
+# AUTHOR
+
+binary.com, `<perl at binary.com>`
+
+# BUGS
+
+Please report any bugs or feature requests to
+`bug-moosex-role-registry at rt.cpan.org`, or through the web
+interface at
+[http://rt.cpan.org/NoAuth/ReportBug.html?Queue=MooseX-Role-Registry](http://rt.cpan.org/NoAuth/ReportBug.html?Queue=MooseX-Role-Registry).
+We will be notified, and then you'll automatically be notified of progress on
+your bug as we make changes.
+
+# SUPPORT
+
+You can find documentation for this module with the perldoc command.
 
     perldoc MooseX::Role::Registry
 
 You can also look for information at:
 
-    RT, CPAN's request tracker (report bugs here)
-        http://rt.cpan.org/NoAuth/Bugs.html?Dist=MooseX-Role-Registry
+- RT: CPAN's request tracker (report bugs here)
 
-    AnnoCPAN, Annotated CPAN documentation
-        http://annocpan.org/dist/MooseX-Role-Registry
+    [http://rt.cpan.org/NoAuth/Bugs.html?Dist=MooseX-Role-Registry](http://rt.cpan.org/NoAuth/Bugs.html?Dist=MooseX-Role-Registry)
 
-    CPAN Ratings
-        http://cpanratings.perl.org/d/MooseX-Role-Registry
+- AnnoCPAN: Annotated CPAN documentation
 
-    Search CPAN
-        http://search.cpan.org/dist/MooseX-Role-Registry/
+    [http://annocpan.org/dist/MooseX-Role-Registry](http://annocpan.org/dist/MooseX-Role-Registry)
 
+- CPAN Ratings
 
-#### LICENSE AND COPYRIGHT
+    [http://cpanratings.perl.org/d/MooseX-Role-Registry](http://cpanratings.perl.org/d/MooseX-Role-Registry)
 
-Copyright (C) 2015 binary.com
+- Search CPAN
 
-This program is free software; you can redistribute it and/or modify it
-under the terms of the the Artistic License (2.0). You may obtain a
-copy of the full license at:
-
-http://www.perlfoundation.org/artistic_license_2_0
-
-Any use, modification, and distribution of the Standard or Modified
-Versions is governed by this Artistic License. By using, modifying or
-distributing the Package, you accept this license. Do not use, modify,
-or distribute the Package, if you do not accept this license.
-
-If your Modified Version has been derived from a Modified Version made
-by someone other than you, you are nevertheless required to ensure that
-your Modified Version complies with the requirements of this license.
-
-This license does not grant you the right to use any trademark, service
-mark, tradename, or logo of the Copyright Holder.
-
-This license includes the non-exclusive, worldwide, free-of-charge
-patent license to make, have made, use, offer to sell, sell, import and
-otherwise transfer the Package with respect to any patent claims
-licensable by the Copyright Holder that are necessarily infringed by the
-Package. If you institute patent litigation (including a cross-claim or
-counterclaim) against any party alleging that the Package constitutes
-direct or contributory patent infringement, then this Artistic License
-to you shall terminate on the date that such litigation is filed.
-
-Disclaimer of Warranty: THE PACKAGE IS PROVIDED BY THE COPYRIGHT HOLDER
-AND CONTRIBUTORS "AS IS' AND WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES.
-THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-PURPOSE, OR NON-INFRINGEMENT ARE DISCLAIMED TO THE EXTENT PERMITTED BY
-YOUR LOCAL LAW. UNLESS REQUIRED BY LAW, NO COPYRIGHT HOLDER OR
-CONTRIBUTOR WILL BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, OR
-CONSEQUENTIAL DAMAGES ARISING IN ANY WAY OUT OF THE USE OF THE PACKAGE,
-EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+    [http://search.cpan.org/dist/MooseX-Role-Registry/](http://search.cpan.org/dist/MooseX-Role-Registry/)
